@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.10.0/css/ol.css" type="text/css">
     <style>
       .map {
-        height: 600px;
+        height: 400px;
         width: 100%;
       }
     </style>
@@ -13,21 +13,70 @@
     <title>OpenLayers example</title>
   </head>
   <body>
-    <h2>My Map</h2>
+    <h2>SIGN</h2>
     <div id="map" class="map"></div>
+
     <script type="text/javascript">
-      var map = new ol.Map({
-        target: 'map',
-        layers: [
-          new ol.layer.Tile({
+
+      const baseLayer = new ol.layer.Tile({
             source: new ol.source.OSM()
-          })
+          });
+
+      const view = new ol.View({
+          center: ol.proj.fromLonLat([1.91, 47.90]),
+          zoom: 13,
+        });
+      
+      var map = new ol.Map({
+        layers: [
+          baseLayer,
         ],
-        view: new ol.View({
-          center: ol.proj.fromLonLat([1.92, 47.90]),
-          zoom: 13
-        })
+        target: 'map',
+        view: view,
       });
+
+      const geolocation = new ol.Geolocation({
+        trackingOptions: {
+         enableHighAccuracy: true,
+       },
+       projection: view.getProjection(),
+       tracking: true,
+      });
+
+      const accuracyFeature = new ol.Feature();
+        geolocation.on('change:accuracyGeometry', function () {
+        accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
+      });
+
+      const positionFeature = new ol.Feature();
+      positionFeature.setStyle(
+        new ol.style.Style({
+          image: new ol.style.Circle({
+          radius: 6,
+          fill: new ol.style.Fill({
+            color: '#3399CC',
+            width: 10,
+          }),
+          stroke: new ol.style.Stroke({
+            color: '#fff',
+            width: 5,
+          }),
+        }),
+      }),
+    );
+
+    geolocation.on('change:position', function () {
+      const coordinates = geolocation.getPosition();
+      positionFeature.setGeometry(coordinates ? new ol.geom.Point(coordinates) : null);
+    });
+
+    new ol.layer.Vector({
+      map: map,
+      source: new ol.source.Vector({
+        features: [accuracyFeature, positionFeature],
+      })
+    });
+
     </script>
   </body>
 </html>

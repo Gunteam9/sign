@@ -1,6 +1,7 @@
 package com.example.lesign;
 
 import android.os.Bundle;
+import android.webkit.GeolocationPermissions;
 import android.webkit.WebView;
 
 import androidx.appcompat.app.AppCompatActivity;
