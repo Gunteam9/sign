@@ -46,6 +46,22 @@
           }),
         });
 
+        const ligneTramLayer = new ol.layer.Tile({
+          source: new ol.source.TileWMS({
+            url: 'http://localhost:8600/geoserver/wms',
+            params: {'LAYERS': 'Sign:tao_ligne_tram_od — tao_ligne_tram_od.shp', 'TILED': true},
+            serverType: 'geoserver',
+          }),
+        });
+
+        const ligneBusLayer = new ol.layer.Tile({
+          source: new ol.source.TileWMS({
+            url: 'http://localhost:8600/geoserver/wms',
+            params: {'LAYERS': 'Sign:tao_ligne_bus_od — tao_ligne_bus_od.shp', 'TILED': true},
+            serverType: 'geoserver',
+          }),
+        });
+
       const view = new ol.View({
           center: ol.proj.fromLonLat([1.91, 47.90]),
           zoom: 13,
@@ -57,6 +73,8 @@
           stationVelosLayer,
           pisteCyclableLayer,
           arrretTramBusLayer,
+          ligneTramLayer,
+          ligneBusLayer,
         ],
         target: 'map',
         view: view,
