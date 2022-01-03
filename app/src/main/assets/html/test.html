@@ -30,6 +30,22 @@
           }),
         });
 
+        const pisteCyclableLayer = new ol.layer.Tile({
+          source: new ol.source.TileWMS({
+            url: 'http://localhost:8600/geoserver/wms',
+            params: {'LAYERS': 'Sign:referentielbdauao_dep_boucle_loire', 'TILED': true},
+            serverType: 'geoserver',
+          }),
+        });
+
+        const arrretTramBusLayer = new ol.layer.Tile({
+          source: new ol.source.TileWMS({
+            url: 'http://localhost:8600/geoserver/wms',
+            params: {'LAYERS': 'Sign:tao_arrets_od — tao_arrets_od.shp', 'TILED': true},
+            serverType: 'geoserver',
+          }),
+        });
+
       const view = new ol.View({
           center: ol.proj.fromLonLat([1.91, 47.90]),
           zoom: 13,
@@ -39,6 +55,8 @@
         layers: [
           baseLayer,
           stationVelosLayer,
+          pisteCyclableLayer,
+          arrretTramBusLayer,
         ],
         target: 'map',
         view: view,
