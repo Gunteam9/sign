@@ -22,6 +22,14 @@
             source: new ol.source.OSM()
           });
 
+      const stationVelosLayer = new ol.layer.Tile({
+          source: new ol.source.TileWMS({
+            url: 'http://localhost:8600/geoserver/wms',
+            params: {'LAYERS': 'Sign:referentielbdauao_dep_station_velos — referentielbdauao_dep_s', 'TILED': true},
+            serverType: 'geoserver',
+          }),
+        });
+
       const view = new ol.View({
           center: ol.proj.fromLonLat([1.91, 47.90]),
           zoom: 13,
@@ -30,6 +38,7 @@
       var map = new ol.Map({
         layers: [
           baseLayer,
+          stationVelosLayer,
         ],
         target: 'map',
         view: view,
