@@ -1,33 +1,254 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.10.0/css/ol.css" type="text/css">
-    <style>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.10.0/css/ol.css" type="text/css">
+  <style>
       .map {
-        height: 600px;
+        height: 400px;
         width: 100%;
       }
     </style>
-    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.10.0/build/ol.js"></script>
-    <title>OpenLayers example</title>
-  </head>
-  <body>
-    <h2>My Map</h2>
-    <div id="map" class="map"></div>
-    <script type="text/javascript">
-      var map = new ol.Map({
-        target: 'map',
-        layers: [
-          new ol.layer.Tile({
+  <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.10.0/build/ol.js"></script>
+  <title>OpenLayers example</title>
+</head>
+<body>
+<h2>SIGN</h2>
+<div id="map" class="map"></div>
+Legend:
+<div id="legendes">
+  <br>
+  <img id="legend1"/>
+  <div>
+    <input type="checkbox" id="velos_chkbx" name="velos_chkbx">
+    <label for="velos_chkbx">Piste cyclable</label>
+  </div>
+  <br>
+  <img id="legend2"/>
+  <div>
+    <input type="checkbox" id="stations_velos_chkbx" name="stations_velos_chkbx">
+    <label for="stations_velos_chkbx">Station de vélo</label>
+  </div>
+  <br>
+  <img id="legend3"/>
+  <div>
+    <input type="checkbox" id="arret_tao_chkbx" name="arret_tao_chkbx">
+    <label for="arret_tao_chkbx">Arrêt Tao</label>
+  </div>
+  <br>
+  <img id="legend4"/>
+  <div>
+    <input type="checkbox" id="ligne_bus_chkbx" name="ligne_bus_chkbx">
+    <label for="ligne_bus_chkbx">Lignes de bus</label>
+  </div>
+  <br>
+  <img id="legend5"/>
+  <div>
+    <input type="checkbox" id="ligne_tram_chkbx" name="ligne_tram_chkbx">
+    <label for="ligne_tram_chkbx">Lignes de tram</label>
+  </div>
+</div>
+
+<script type="text/javascript">
+
+      const baseLayer = new ol.layer.Tile({
             source: new ol.source.OSM()
-          })
+          });
+
+      const stationVelosLayer = new ol.layer.Tile({
+          source: new ol.source.TileWMS({
+            url: 'http://localhost:8600/geoserver/wms',
+            params: {'LAYERS': 'Sign:referentielbdauao_dep_station_velos', 'TILED': true},
+            serverType: 'geoserver',
+          }),
+        });
+
+        const pisteCyclableLayer = new ol.layer.Tile({
+          source: new ol.source.TileWMS({
+            url: 'http://localhost:8600/geoserver/wms',
+            params: {'LAYERS': 'Sign:referentielbdauao_dep_boucle_loire', 'TILED': true},
+            serverType: 'geoserver',
+          }),
+        });
+
+        const arrretTramBusLayer = new ol.layer.Tile({
+          source: new ol.source.TileWMS({
+            url: 'http://localhost:8600/geoserver/wms',
+            params: {'LAYERS': 'Sign:tao_arrets_od', 'TILED': true},
+            serverType: 'geoserver',
+          }),
+        });
+
+        const ligneTramLayer = new ol.layer.Tile({
+          source: new ol.source.TileWMS({
+            url: 'http://localhost:8600/geoserver/wms',
+            params: {'LAYERS': 'Sign:tao_ligne_tram_od', 'TILED': true},
+            serverType: 'geoserver',
+          }),
+        });
+
+        const ligneBusLayer = new ol.layer.Tile({
+          source: new ol.source.TileWMS({
+            url: 'http://localhost:8600/geoserver/wms',
+            params: {'LAYERS': 'Sign:tao_ligne_bus_od', 'TILED': true},
+            serverType: 'geoserver',
+          }),
+        });
+
+      const view = new ol.View({
+          center: ol.proj.fromLonLat([1.91, 47.90]),
+          zoom: 13,
+        });
+
+      var map = new ol.Map({
+        layers: [
+          baseLayer,
+          stationVelosLayer,
+          pisteCyclableLayer,
+          ligneTramLayer,
+          ligneBusLayer,
+          arrretTramBusLayer,
         ],
-        view: new ol.View({
-          center: ol.proj.fromLonLat([1.92, 47.90]),
-          zoom: 13
-        })
+        target: 'map',
+        view: view,
       });
+
+      $("#velos_chkbx").change(function (){
+      if ($("#velos_chkbx").is(':checked'))
+        map.addLayer(pisteCyclableLayer);
+      else
+        map.removeLayer(pisteCyclableLayer);
+    });
+
+    $("#stations_velos_chkbx").change(function (){
+      if ($("#stations_velos_chkbx").is(':checked'))
+        map.addLayer(stationVelosLayer);
+      else
+        map.removeLayer(stationVelosLayer);
+    });
+
+    $("#arret_tao_chkbx").change(function (){
+      if ($("#arret_tao_chkbx").is(':checked'))
+        map.addLayer(arrretTramBusLayer);
+      else
+        map.removeLayer(arrretTramBusLayer);
+    });
+
+    $("#ligne_bus_chkbx").change(function (){
+      if ($("#ligne_bus_chkbx").is(':checked'))
+        map.addLayer(ligneBusLayer);
+      else
+        map.removeLayer(ligneBusLayer);
+    });
+
+    $("#ligne_tram_chkbx").change(function (){
+      if ($("#ligne_tram_chkbx").is(':checked'))
+        map.addLayer(ligneTramLayer);
+      else
+        map.removeLayer(ligneTramLayer);
+    });
+
+      const legendPisteCyclable = new ol.source.ImageWMS({
+        url: 'http://localhost:8600/geoserver/wms',
+        params: {'LAYERS': 'Sign:referentielbdauao_dep_boucle_loire'},
+        ratio: 1,
+        serverType: 'geoserver',
+      });
+
+      const legendStationVelos = new ol.source.ImageWMS({
+        url: 'http://localhost:8600/geoserver/wms',
+        params: {'LAYERS': 'Sign:referentielbdauao_dep_station_velos'},
+        ratio: 1,
+        serverType: 'geoserver',
+      });
+
+      const legendArretTao = new ol.source.ImageWMS({
+        url: 'http://localhost:8600/geoserver/wms',
+        params: {'LAYERS': 'Sign:tao_arrets_od'},
+        ratio: 1,
+        serverType: 'geoserver',
+      });
+
+      const legendLigneDeBus = new ol.source.ImageWMS({
+        url: 'http://localhost:8600/geoserver/wms',
+        params: {'LAYERS': 'Sign:tao_ligne_bus_od'},
+        ratio: 1,
+        serverType: 'geoserver',
+      });
+
+      const legendLigneDeTram = new ol.source.ImageWMS({
+        url: 'http://localhost:8600/geoserver/wms',
+        params: {'LAYERS': 'Sign:tao_ligne_tram_od'},
+        ratio: 1,
+        serverType: 'geoserver',
+      });
+
+      const updateLegend = function (source,resolution,tar) {
+        const graphicUrl = source.getLegendUrl(resolution);
+        const img = document.getElementById(tar);
+        img.src = graphicUrl;
+      };
+
+
+      const geolocation = new ol.Geolocation({
+        trackingOptions: {
+         enableHighAccuracy: true,
+       },
+       projection: view.getProjection(),
+       tracking: true,
+      });
+
+      const accuracyFeature = new ol.Feature();
+        geolocation.on('change:accuracyGeometry', function () {
+        accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
+      });
+
+      const positionFeature = new ol.Feature();
+      positionFeature.setStyle(
+        new ol.style.Style({
+          image: new ol.style.Circle({
+          radius: 6,
+          fill: new ol.style.Fill({
+            color: '#3399CC',
+            width: 10,
+          }),
+          stroke: new ol.style.Stroke({
+            color: '#fff',
+            width: 5,
+          }),
+        }),
+      }),
+    );
+
+    geolocation.on('change:position', function () {
+      const coordinates = geolocation.getPosition();
+      positionFeature.setGeometry(coordinates ? new ol.geom.Point(coordinates) : null);
+    });
+
+    new ol.layer.Vector({
+      map: map,
+      source: new ol.source.Vector({
+        features: [accuracyFeature, positionFeature],
+      })
+    });
+
+    // Initial legend
+    const resolution = map.getView().getResolution();
+    updateLegend(legendPisteCyclable,resolution,'legend1');
+    updateLegend(legendStationVelos,resolution,'legend2');
+    updateLegend(legendArretTao,resolution,'legend3');
+    updateLegend(legendLigneDeBus,resolution,'legend4');
+    updateLegend(legendLigneDeTram,resolution,'legend5');
+
+    // Update the legend when the resolution changes
+    map.getView().on('change:resolution', function (event) {
+    const resolution = event.target.getResolution();
+    updateLegend(legendPisteCyclable,resolution,'legend1');
+    updateLegend(legendStationVelos,resolution,'legend2');
+    updateLegend(legendArretTao,resolution,'legend3');
+    updateLegend(legendLigneDeBus,resolution,'legend4');
+    updateLegend(legendLigneDeTram,resolution,'legend5');
+    });
     </script>
-  </body>
+</body>
 </html>
