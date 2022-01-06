@@ -16,7 +16,7 @@
 <body>
 <h2>SIGN</h2>
 <div id="map" class="map"></div>
-Filtre:<input type="text" id=filtre oninput="onFiltreChange(this)"/>
+Filtre:<input type="text" id=myFilter>
 <br>
 Legend:
 <div id="legendes">
@@ -85,7 +85,7 @@ Legend:
           }),
         });
 
-        const ligneBusLayer = new ol.layer.Tile({
+        var ligneBusLayer = new ol.layer.Tile({
           source: new ol.source.TileWMS({
             url: 'http://localhost:8600/geoserver/wms',
             params: {'LAYERS': 'Sign:tao_ligne_bus_od', 'TILED': true},
@@ -160,14 +160,14 @@ Legend:
         serverType: 'geoserver',
       });
 
-      var legendArretTao = new ol.source.ImageWMS({
+      const legendArretTao = new ol.source.ImageWMS({
         url: 'http://localhost:8600/geoserver/wms',
         params: {'LAYERS': 'Sign:tao_arrets_od'},
         ratio: 1,
         serverType: 'geoserver',
       });
 
-      const legendLigneDeBus = new ol.source.ImageWMS({
+      var legendLigneDeBus = new ol.source.ImageWMS({
         url: 'http://localhost:8600/geoserver/wms',
         params: {'LAYERS': 'Sign:tao_ligne_bus_od'},
         ratio: 1,
@@ -182,8 +182,8 @@ Legend:
       });
 
       const updateLegend = function (source,resolution,tar) {
-        const graphicUrl = source.getLegendUrl(resolution);
-        const img = document.getElementById(tar);
+        var graphicUrl = source.getLegendUrl(resolution);
+        var img = document.getElementById(tar);
         img.src = graphicUrl;
       };
 
@@ -237,19 +237,22 @@ Legend:
     updateLegend(legendLigneDeBus,resolution,'legend4');
     updateLegend(legendLigneDeTram,resolution,'legend5');
 
-    function onFiltreChange(e){
+    document.getElementById("myFilter").addEventListener("input", onFiltreChange);
+
+    function onFiltreChange(){
       map.removeLayer(ligneBusLayer);
 
       ligneBusLayer = new ol.layer.Tile({
           source: new ol.source.TileWMS({
             url: 'http://localhost:8600/geoserver/wms',
-            params: {'LAYERS': 'Sign:tao_ligne_bus_od', 'TILED': true, 'CQL_FILTER': "strToLowerCase(num_ligne) LIKE '%"+e.value+"%'"},
+            params: {'LAYERS': 'Sign:tao_ligne_bus_od', 'TILED': true, 'CQL_FILTER': "num_ligne LIKE '"+this.value+"%'"},
             serverType: 'geoserver',
           }),
         });
 
         map.addLayer(ligneBusLayer);
-    };
+        map.render();
+
     </script>
 </body>
 </html>
