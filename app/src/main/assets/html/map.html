@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.11.0/css/ol.css" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <style>
+      .map {
+        height: 400px;
+        width: 100%;
+      }
+    </style>
+    <script type="text/javascript" src="js/ol.js"></script>
+    <title>OpenLayers example</title>
+</head>
+<body>
+<h2>SIGN</h2>
+<div id="map" class="map"></div>
+Filtre:<input type="text" id=myFilter>
+<br>
+<div>
+    <input type="checkbox" id="velos_chkbx" name="velos_chkbx" checked>
+    <label for="velos_chkbx">Piste cyclable</label>
+
+    <input type="checkbox" id="stations_velos_chkbx" name="stations_velos_chkbx" checked>
+    <label for="stations_velos_chkbx">Station de vélo</label>
+
+    <input type="checkbox" id="arret_tao_chkbx" name="arret_tao_chkbx" checked>
+    <label for="arret_tao_chkbx">Arrêt Tao</label>
+
+    <input type="checkbox" id="ligne_bus_chkbx" name="ligne_bus_chkbx" checked>
+    <label for="ligne_bus_chkbx">Lignes de bus</label>
+
+    <input type="checkbox" id="ligne_tram_chkbx" name="ligne_tram_chkbx" checked>
+    <label for="ligne_tram_chkbx">Lignes de tram</label>
+</div>
+Legend:
+<div id="legendes">
+    <img id="legend1"/><h>Piste cyclable</h>
+    <br>
+    <img id="legend2"/>
+    <br>
+    <img id="legend3"/>
+    <br>
+    <img id="legend4"/>
+    <br>
+    <img id="legend5"/>
+    <br>
+</div>
+
+<script type="text/javascript" src='js/script.js'>
+
+</script>
+</body>
+</html>

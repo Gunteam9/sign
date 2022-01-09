@@ -10,17 +10,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WebView map = new WebView(this);
+        setContentView(R.layout.activity_main);
+
+        WebView map = findViewById(R.id.map);
 
         map.getSettings().setJavaScriptEnabled(true);
-        map.getSettings().setAppCacheEnabled(false);
         map.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
 
-        map.loadUrl("file:///android_asset/html/test.html");
-
-        setContentView(map);
-
-
-
+        map.loadUrl("file:///android_asset/html/map.html");
     }
+
+
 }
