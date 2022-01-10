@@ -50,13 +50,16 @@ Legend:
 </div>
 
 <script type="text/javascript">
+
+        const local = '192.168.0.11';
+
         const baseLayer = new ol.layer.Tile({
         source: new ol.source.OSM()
         });
 
       const stationVelosLayer = new ol.layer.Tile({
           source: new ol.source.TileWMS({
-            url: 'http://192.168.255.245:8600/geoserver/wms',
+            url: 'http://'+local+':8600/geoserver/wms',
             params: {'LAYERS': 'Sign:referentielbdauao_dep_station_velos', 'TILED': true},
             ratio: 1,
             serverType: 'geoserver',
@@ -65,28 +68,28 @@ Legend:
 
         const pisteCyclableLayer = new ol.layer.Tile({
           source: new ol.source.TileWMS({
-            url: 'http://192.168.255.245:8600/geoserver/wms',
+            url: 'http://'+local+':8600/geoserver/wms',
             params: {'LAYERS': 'Sign:referentielbdauao_dep_boucle_loire', 'TILED': true},
           }),
         });
 
         const arrretTramBusLayer = new ol.layer.Tile({
           source: new ol.source.TileWMS({
-            url: 'http://192.168.255.245:8600/geoserver/wms',
+            url: 'http://'+local+':8600/geoserver/wms',
             params: {'LAYERS': 'Sign:tao_arrets_od', 'TILED': true},
           }),
         });
 
         const ligneTramLayer = new ol.layer.Tile({
           source: new ol.source.TileWMS({
-            url: 'http://192.168.255.245:8600/geoserver/wms',
+            url: 'http://'+local+':8600/geoserver/wms',
             params: {'LAYERS': 'Sign:tao_ligne_tram_od', 'TILED': true},
           }),
         });
 
         var ligneBusLayer = new ol.layer.Tile({
           source: new ol.source.TileWMS({
-            url: 'http://192.168.255.245:8600/geoserver/wms',
+            url: 'http://'+local+':8600/geoserver/wms',
             params: {'LAYERS': 'Sign:tao_ligne_bus_od', 'TILED': true},
           }),
         });
@@ -145,31 +148,31 @@ Legend:
     });
 
       const legendPisteCyclable = new ol.source.ImageWMS({
-        url: 'http://192.168.255.245:8600/geoserver/wms',
+        url: 'http://'+local+':8600/geoserver/wms',
         params: {'LAYERS': 'Sign:referentielbdauao_dep_boucle_loire'},
         ratio: 1,
       });
 
       const legendStationVelos = new ol.source.ImageWMS({
-        url: 'http://192.168.255.245:8600/geoserver/wms',
+        url: 'http://'+local+':8600/geoserver/wms',
         params: {'LAYERS': 'Sign:referentielbdauao_dep_station_velos'},
         ratio: 1,
       });
 
       const legendArretTao = new ol.source.ImageWMS({
-        url: 'http://192.168.255.245:8600/geoserver/wms',
+        url: 'http://'+local+':8600/geoserver/wms',
         params: {'LAYERS': 'Sign:tao_arrets_od'},
         ratio: 1,
       });
 
       var legendLigneDeBus = new ol.source.ImageWMS({
-        url: 'http://192.168.255.245:8600/geoserver/wms',
+        url: 'http://'+local+':8600/geoserver/wms',
         params: {'LAYERS': 'Sign:tao_ligne_bus_od'},
         ratio: 1,
       });
 
       const legendLigneDeTram = new ol.source.ImageWMS({
-        url: 'http://192.168.255.245:8600/geoserver/wms',
+        url: 'http://'+local+':8600/geoserver/wms',
         params: {'LAYERS': 'Sign:tao_ligne_tram_od'},
         ratio: 1,
       });
@@ -236,7 +239,7 @@ Legend:
       map.removeLayer(ligneBusLayer);
       ligneBusLayer = new ol.layer.Tile({
           source: new ol.source.TileWMS({
-            url: 'http://192.168.255.245:8600/geoserver/wms',
+            url: 'http://'+local+':8600/geoserver/wms',
             params: {'LAYERS': 'Sign:tao_ligne_bus_od', 'TILED': true, 'CQL_FILTER': "num_ligne LIKE '"+this.value+"%'"},
           }),
         });
